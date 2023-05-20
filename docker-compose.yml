@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  kmf_web_container:
+    image: node:alpine
+    container_name: kfa_web_docker
+    command: "npm run dev"
+    ports:
+      - 5173:5173
+    working_dir: /srv/app
+    volumes:
+      - type: bind
+        source: ./Koomin-Friends-Abroad-Web
+        target: /srv/app
+    tty: true
+
+
+  kmf_backend_container:
+    image: golang:alpine
+    container_name: kfa_backend_docker
+    command: "go run main.go serve --http=0.0.0.0:8090" 
+    ports:
+      - "8090:8090"
+    working_dir: /srv/backend
+    volumes:
+      - type: bind
+        source: ./Koomin-Friends-Abroad-Backend
+        target: /srv/backend
+    tty: true
